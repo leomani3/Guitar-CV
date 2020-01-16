@@ -6,29 +6,30 @@ public class Zone : MonoBehaviour
 {
     [SerializeField]
     private bool isValid = false;
+    private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Note" && isValid)
         {
-            Debug.Log("ENTER");
+            gameManager.score += 50;
+            gameManager.scoreMultiplier += 0.2f;
+            Destroy(other.gameObject);
+            //Debug.Log("ENTER");
+        }
+        else
+        {
+            //Debug.Log("LOUPÉ ! ");
         }
     }
 
-    public bool IsValid
+    public void SetIsValid(bool b)
     {
-        get { return isValid; }
-        set { isValid = value; }
+        isValid = b;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class LevelConstructor : MonoBehaviour
 {
@@ -25,21 +24,36 @@ public class LevelConstructor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //On déplace la camera pour suivre
-        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, transform.position.z - 30);
-
-        transform.position += new Vector3(0, 0, gameManager.speed * Time.deltaTime);
-
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             GameObject spawnedNote = Instantiate(prefab, slots[0].transform.position, Quaternion.identity, savedLevel.transform);
             notes.Add(spawnedNote);
-            //spawnedNote.GetComponent<Note>().enabled = false;
+            spawnedNote.GetComponent<Note>().enabled = false;
         }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            GameObject spawnedNote = Instantiate(prefab, slots[1].transform.position, Quaternion.identity, savedLevel.transform);
+            notes.Add(spawnedNote);
+            spawnedNote.GetComponent<Note>().enabled = false;
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            GameObject spawnedNote = Instantiate(prefab, slots[2].transform.position, Quaternion.identity, savedLevel.transform);
+            notes.Add(spawnedNote);
+            spawnedNote.GetComponent<Note>().enabled = false;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        //On déplace la camera pour suivre
+        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, transform.position.z - 30);
+
+        transform.position += new Vector3(0, 0, gameManager.speed * Time.fixedDeltaTime);
     }
 
     private void OnApplicationQuit()
     {
-        PrefabUtility.CreatePrefab("Assets/"+levelName+".prefab", savedLevel);
+        SaveAsPrefab.saveAsPrefab(savedLevel, levelName);
     }
 }

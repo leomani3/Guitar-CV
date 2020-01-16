@@ -19,96 +19,152 @@ public class CV : MonoBehaviour
     public bool isRectangle;
     public bool isTriangle;
 
-    private VideoCapture videoCapture;
+    public List<Zone> zones;
+
+    private bool isWaiting = false;
 
     private Image<Gray, byte> path;
+    Mat imageFix = new Mat();
+    Image<Gray, byte> imgFix = new Image<Gray, byte>(626, 626);
+    private VideoCapture fluxVideo;
+    Mat image;
     // Start is called before the first frame update
     void Start()
     {
         //videoCapture = new VideoCapture(fileName);
-        videoCapture = new VideoCapture(0);
-        path = new Image<Gray, byte>(640, 480);
+        image = new Mat();
+        fluxVideo = new VideoCapture(0, VideoCapture.API.Any);
+        fluxVideo.ImageGrabbed += ProcessFrame;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Mat image = videoCapture.QueryFrame();
-        Mat imageHSV = new Mat();
-        Mat imageGray = new Mat();
-        Mat imageBlured = new Mat();
+        fluxVideo.Grab();
+    }
 
-        CvInvoke.CvtColor(image, imageGray, ColorConversion.Bgr2Gray);
+    private void ProcessFrame(object sender, EventArgs e)
+    {
 
-        //CvInvoke.Blur(imageHSV, imageBlured, new Size(30,30), new Point(-1, -1));
-        CvInvoke.GaussianBlur(image, imageBlured, new Size(3, 3), 10);
-
-        CvInvoke.CvtColor(imageBlured, imageHSV, ColorConversion.Bgr2Hsv);
-
-        Image<Hsv, byte> imgHSV = imageHSV.ToImage<Hsv, byte>();
-        Image<Bgr, byte> img = image.ToImage<Bgr, byte>();
-        imgHSV = imgHSV.Flip(FlipType.Horizontal);
-
-
-        Image<Gray, byte> imgGray = imgHSV.InRange(new Hsv(min.x, min.y, min.z), new Hsv(max.x, max.y, max.z));
-
-        Mat structElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(5, 5), new Point(-1, -1));
-        CvInvoke.Erode(imgGray, imgGray, structElement, new Point(-1, -1), 2, BorderType.Constant, new MCvScalar(0));
-
-        //détection de contours
-        VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-        Mat m = new Mat();
-        CvInvoke.FindContours(imgGray, contours, m, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-        for (int i = 0; i < contours.Size; i++)
+        try
         {
-            double perimeter = CvInvoke.ArcLength(contours[i], true);
-            VectorOfPoint approx = new VectorOfPoint();
-            CvInvoke.ApproxPolyDP(contours[i], approx, 0.04 * perimeter, true);
+            Mat imageHSV = new Mat();
+            Mat imageGray = new Mat();
+            Mat imageBlured = new Mat();
+            fluxVideo.Retrieve(image, 0);
 
-            CvInvoke.DrawContours(image, contours, i, new MCvScalar(0, 0, 255));
 
-            //calcul du centroid
-            /*Moments moments = CvInvoke.Moments(contours[i]);
-            int x = (int)(moments.M10 / moments.M00);
-            int y = (int)(moments.M01 / moments.M00);
+            CvInvoke.CvtColor(image, imageGray, ColorConversion.Bgr2Gray);
 
-            path.Data[y, x, 0] = 255;*/
+            CvInvoke.GaussianBlur(image, imageBlured, new Size(3, 3), 10);
 
-            if (approx.Size == 4)
+            CvInvoke.CvtColor(imageBlured, imageHSV, ColorConversion.Bgr2Hsv);
+
+            Image<Hsv, byte> imgHSV = imageHSV.ToImage<Hsv, byte>();
+            imgHSV = imgHSV.Flip(FlipType.Horizontal);
+
+
+            Image<Gray, byte> imgGray = imgHSV.InRange(new Hsv(min.x, min.y, min.z), new Hsv(max.x, max.y, max.z));
+
+            Mat structElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(5, 5), new Point(-1, -1));
+            CvInvoke.Erode(imgGray, imgGray, structElement, new Point(-1, -1), 2, BorderType.Constant, new MCvScalar(0));
+
+            //détection de contours
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            Mat m = new Mat();
+            CvInvoke.FindContours(imgGray, contours, m, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+            for (int i = 0; i < contours.Size; i++)
             {
-                isRectangle = true;
+                double perimeter = CvInvoke.ArcLength(contours[i], true);
+                VectorOfPoint approx = new VectorOfPoint();
+                CvInvoke.ApproxPolyDP(contours[i], approx, 0.04 * perimeter, true);
+
+                CvInvoke.DrawContours(image, contours, i, new MCvScalar(0, 0, 255));
+
+                if (approx.Size == 4)
+                {
+                    isRectangle = true;
+                }
+
+                if (approx.Size == 3)
+                {
+                    if (perimeter > 100)
+                    {
+                        isTriangle = true;
+                    }
+                    else
+                    {
+                        isTriangle = false;
+                    }
+
+                }
+
+                if (approx.Size > 4)
+                {
+                    isCircle = true;
+                }
+            }
+
+            if (!isTriangle)
+            {
+                zones[0].GetComponent<Zone>().SetIsValid(true);
             }
             else
             {
-                isRectangle = false;
+                zones[0].GetComponent<Zone>().SetIsValid(false);
             }
 
-            if (approx.Size == 3)
+            if (!isRectangle)
             {
-                isTriangle = true;
+                zones[1].GetComponent<Zone>().SetIsValid(true);
             }
             else
             {
-                isTriangle = false;
+                zones[1].GetComponent<Zone>().SetIsValid(false);
             }
 
-            if (approx.Size > 4)
+            if (!isCircle)
             {
-                isCircle = true;
+                zones[2].GetComponent<Zone>().SetIsValid(true);
             }
-            else
+           else
             {
-                isCircle = false;
+                zones[2].GetComponent<Zone>().SetIsValid(false);
             }
+
+            /*isRectangle = false;
+            isCircle = false;
+            isTriangle = false;*/
+
+            if (!isWaiting)
+            {
+                StartCoroutine(wait());
+            }
+
+
+
+
+            CvInvoke.Imshow("Cam view", imgGray);
         }
+        catch (Exception exception)
+        {
+            Debug.Log(exception.Message);
+        }
+    }
 
-        CvInvoke.Imshow("Cam view", imgGray);
-        CvInvoke.WaitKey(24);
+    public IEnumerator wait()
+    {
+        isWaiting = true;
+        yield return new WaitForSeconds(0.05f);
+        isCircle = false;
+        isRectangle = false;
+        isTriangle = false;
+        isWaiting = false;
     }
 
     private void OnDestroy()
     {
-        videoCapture.Dispose();
+        fluxVideo.Dispose();
         CvInvoke.DestroyAllWindows();
     }
 }
