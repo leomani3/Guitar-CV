@@ -19,6 +19,9 @@ public class CV : MonoBehaviour
     public bool isRectangle;
     public bool isTriangle;
 
+    public Material notValidMat;
+    public Material validMat;
+
     public List<Zone> zones;
 
     private bool isWaiting = false;
@@ -108,6 +111,7 @@ public class CV : MonoBehaviour
             if (!isTriangle)
             {
                 zones[0].GetComponent<Zone>().SetIsValid(true);
+                zones[0].GetComponent<MeshRenderer>().material = validMat;
             }
             else
             {
@@ -117,6 +121,7 @@ public class CV : MonoBehaviour
             if (!isRectangle)
             {
                 zones[1].GetComponent<Zone>().SetIsValid(true);
+                zones[1].GetComponent<MeshRenderer>().material = validMat;
             }
             else
             {
@@ -126,6 +131,7 @@ public class CV : MonoBehaviour
             if (!isCircle)
             {
                 zones[2].GetComponent<Zone>().SetIsValid(true);
+                zones[2].GetComponent<MeshRenderer>().material = validMat;
             }
            else
             {
@@ -160,6 +166,9 @@ public class CV : MonoBehaviour
         isRectangle = false;
         isTriangle = false;
         isWaiting = false;
+        zones[0].GetComponent<MeshRenderer>().material = notValidMat;
+        zones[1].GetComponent<MeshRenderer>().material = notValidMat;
+        zones[2].GetComponent<MeshRenderer>().material = notValidMat;
     }
 
     private void OnDestroy()
