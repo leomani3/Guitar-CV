@@ -6,7 +6,9 @@ public class LevelConstructor : MonoBehaviour
 {
     public GameObject[] slots = new GameObject[3];
     public GameObject levelPrefab;
-    public GameObject prefab;
+    public GameObject prefabTriangle;
+    public GameObject prefabCircle;
+    public GameObject prefabRectangle;
     public string levelName;
 
     private GameManager gameManager;
@@ -26,19 +28,19 @@ public class LevelConstructor : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            GameObject spawnedNote = Instantiate(prefab, slots[0].transform.position, Quaternion.identity, savedLevel.transform);
+            GameObject spawnedNote = Instantiate(prefabTriangle, slots[0].transform.position + new Vector3(-1.5f, 3, 0), Quaternion.Euler(90, 0, 0), savedLevel.transform);
             notes.Add(spawnedNote);
             spawnedNote.GetComponent<Note>().enabled = false;
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            GameObject spawnedNote = Instantiate(prefab, slots[1].transform.position, Quaternion.identity, savedLevel.transform);
+            GameObject spawnedNote = Instantiate(prefabRectangle, slots[1].transform.position + new Vector3(0, 2, 0), Quaternion.identity, savedLevel.transform);
             notes.Add(spawnedNote);
             spawnedNote.GetComponent<Note>().enabled = false;
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            GameObject spawnedNote = Instantiate(prefab, slots[2].transform.position, Quaternion.identity, savedLevel.transform);
+            GameObject spawnedNote = Instantiate(prefabCircle, slots[2].transform.position + new Vector3(0, 2, 0), Quaternion.identity, savedLevel.transform);
             notes.Add(spawnedNote);
             spawnedNote.GetComponent<Note>().enabled = false;
         }
@@ -47,7 +49,7 @@ public class LevelConstructor : MonoBehaviour
     private void FixedUpdate()
     {
         //On déplace la camera pour suivre
-        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, transform.position.z - 30);
+        Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, transform.position.z - 20);
 
         transform.position += new Vector3(0, 0, gameManager.speed * Time.fixedDeltaTime);
     }
