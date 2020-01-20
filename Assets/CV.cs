@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Emgu.CV;
 using Emgu.CV.Util;
 using Emgu.CV.CvEnum;
@@ -26,6 +27,10 @@ public class CV : MonoBehaviour
 
     private bool isWaiting = false;
 
+    private Texture2D tex;
+
+    public Image cameraTexture;
+
     private Image<Gray, byte> path;
     Mat imageFix = new Mat();
     Image<Gray, byte> imgFix = new Image<Gray, byte>(626, 626);
@@ -38,6 +43,7 @@ public class CV : MonoBehaviour
         image = new Mat();
         fluxVideo = new VideoCapture(0, VideoCapture.API.Any);
         fluxVideo.ImageGrabbed += ProcessFrame;
+        tex = new Texture2D(fluxVideo.Width, fluxVideo.Height, TextureFormat.BGRA32, false);
     }
 
     // Update is called once per frame
@@ -147,10 +153,12 @@ public class CV : MonoBehaviour
                 StartCoroutine(wait());
             }
 
-
-
-
-            CvInvoke.Imshow("Cam view", imgGray);
+            Image<Bgra, byte> imgToDisplay = new Image<Bgra, byte>(imgGray.Width, imgGray.Height);
+            CvInvoke.CvtColor(imgGray, imgToDisplay, ColorConversion.Gray2Bgra);
+            tex.LoadRawTextureData(imgToDisplay.Bytes);
+            tex.Apply();
+            cameraTexture.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 1.0f);
+            //CvInvoke.Imshow("Cam view", imgGray);
         }
         catch (Exception exception)
         {
