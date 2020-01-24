@@ -34,13 +34,13 @@ public class LevelConstructor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            GameObject spawnedNote = Instantiate(prefabRectangle, slots[1].transform.position + new Vector3(0, 2, 0), Quaternion.identity, savedLevel.transform);
+            GameObject spawnedNote = Instantiate(prefabRectangle, slots[1].transform.position + new Vector3(0, 3, 0), Quaternion.identity, savedLevel.transform);
             notes.Add(spawnedNote);
             spawnedNote.GetComponent<Note>().enabled = false;
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            GameObject spawnedNote = Instantiate(prefabCircle, slots[2].transform.position + new Vector3(0, 2, 0), Quaternion.identity, savedLevel.transform);
+            GameObject spawnedNote = Instantiate(prefabCircle, slots[2].transform.position + new Vector3(0, 3, 0), Quaternion.identity, savedLevel.transform);
             notes.Add(spawnedNote);
             spawnedNote.GetComponent<Note>().enabled = false;
         }

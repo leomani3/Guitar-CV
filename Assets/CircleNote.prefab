@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7319460344306353815}
   - component: {fileID: 5831974430418931011}
   - component: {fileID: -4762286057856091754}
-  m_Layer: 0
+  - component: {fileID: 7715286906462229089}
+  m_Layer: 9
   m_Name: CircleNote
-  m_TagString: Untagged
+  m_TagString: Note
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,3 +107,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc704bfe85cf9b8498e9847367d68bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &7715286906462229089
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730068188323909943}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 118
+  m_CollisionDetection: 0

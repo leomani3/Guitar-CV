@@ -298,8 +298,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 265485541}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.27374667, y: 0.68089145, z: 0.3475615}
+  m_LocalRotation: {x: -0.5735764, y: -0, z: -0, w: 0.8191521}
+  m_LocalPosition: {x: -2.0737467, y: -15.033882, z: 32.965263}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 371432079}
@@ -307,8 +307,8 @@ Transform:
   - {fileID: 620293278}
   - {fileID: 1054722629}
   - {fileID: 819414153}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 603144667}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &270970148
 GameObject:
@@ -573,7 +573,8 @@ Transform:
   m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
   m_LocalPosition: {x: 1.8, y: 36.8, z: 3.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 265485542}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
@@ -587,7 +588,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 534f177a941b5074e9b5e98817861bf1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e7e7d736638a9274d902fa465e57d79f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1004,7 +1005,7 @@ MonoBehaviour:
     type: 3}
   prefabRectangle: {fileID: 1931148973196185738, guid: 9fad2591f6c9a284796631b663b821de,
     type: 3}
-  levelName: test
+  levelName: Savant living ipod
   notes: []
 --- !u!4 &1039776871
 Transform:
@@ -1161,7 +1162,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1200605114
 GameObject:
@@ -1227,7 +1228,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1216247663
 GameObject:
@@ -1322,7 +1323,7 @@ RectTransform:
   - {fileID: 2059621799}
   - {fileID: 205627781}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1421,61 +1422,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401776010}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1643593631
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1643593633}
-  - component: {fileID: 1643593632}
-  m_Layer: 0
-  m_Name: CV
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1643593632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643593631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c7f63c76bb3b64395bc30cfac9d01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fileName: 
-  min: {x: 30, y: 70, z: 90}
-  max: {x: 90, y: 255, z: 255}
-  isCircle: 0
-  isRectangle: 0
-  isTriangle: 0
-  notValidMat: {fileID: 2100000, guid: 2448d6725e4a4654a9ed3eb91df2cf82, type: 2}
-  validMat: {fileID: 2100000, guid: 6e8b6985b1709754a95f5f836e57907b, type: 2}
-  zones:
-  - {fileID: 2038676612}
-  - {fileID: 841996009}
-  - {fileID: 2132981712}
---- !u!4 &1643593633
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643593631}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6300001, y: -0.41999996, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2038676611
 GameObject:
   m_ObjectHideFlags: 0

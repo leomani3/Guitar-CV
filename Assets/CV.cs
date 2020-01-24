@@ -28,8 +28,10 @@ public class CV : MonoBehaviour
     private bool isWaiting = false;
 
     private Texture2D tex;
+    private Texture2D tex2;
 
-    public Image cameraTexture;
+    public Image imageCameraBinaire;
+    public Image imageCameraReelle;
 
     private Image<Gray, byte> path;
     Mat imageFix = new Mat();
@@ -44,6 +46,7 @@ public class CV : MonoBehaviour
         fluxVideo = new VideoCapture(0, VideoCapture.API.Any);
         fluxVideo.ImageGrabbed += ProcessFrame;
         tex = new Texture2D(fluxVideo.Width, fluxVideo.Height, TextureFormat.BGRA32, false);
+        tex2 = new Texture2D(fluxVideo.Width, fluxVideo.Height, TextureFormat.BGRA32, false);
     }
 
     // Update is called once per frame
@@ -122,6 +125,7 @@ public class CV : MonoBehaviour
             else
             {
                 zones[0].GetComponent<Zone>().SetIsValid(false);
+                zones[0].GetComponent<MeshRenderer>().material = notValidMat;
             }
 
             if (!isRectangle)
@@ -132,6 +136,7 @@ public class CV : MonoBehaviour
             else
             {
                 zones[1].GetComponent<Zone>().SetIsValid(false);
+                zones[1].GetComponent<MeshRenderer>().material = notValidMat;
             }
 
             if (!isCircle)
@@ -142,11 +147,8 @@ public class CV : MonoBehaviour
            else
             {
                 zones[2].GetComponent<Zone>().SetIsValid(false);
+                zones[2].GetComponent<MeshRenderer>().material = notValidMat;
             }
-
-            /*isRectangle = false;
-            isCircle = false;
-            isTriangle = false;*/
 
             if (!isWaiting)
             {
@@ -157,7 +159,13 @@ public class CV : MonoBehaviour
             CvInvoke.CvtColor(imgGray, imgToDisplay, ColorConversion.Gray2Bgra);
             tex.LoadRawTextureData(imgToDisplay.Bytes);
             tex.Apply();
-            cameraTexture.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 1.0f);
+            imageCameraBinaire.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 1.0f);
+
+            Image<Bgra, byte> imgToDisplayReal = new Image<Bgra, byte>(image.Width, image.Height);
+            CvInvoke.CvtColor(image, imgToDisplayReal, ColorConversion.Bgr2Bgra);
+            tex2.LoadRawTextureData(imgToDisplayReal.Bytes);
+            tex2.Apply();
+            imageCameraReelle.sprite = Sprite.Create(tex2, new Rect(0.0f, 0.0f, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 1.0f);
             //CvInvoke.Imshow("Cam view", imgGray);
         }
         catch (Exception exception)
@@ -169,14 +177,11 @@ public class CV : MonoBehaviour
     public IEnumerator wait()
     {
         isWaiting = true;
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.1f);
         isCircle = false;
         isRectangle = false;
         isTriangle = false;
         isWaiting = false;
-        zones[0].GetComponent<MeshRenderer>().material = notValidMat;
-        zones[1].GetComponent<MeshRenderer>().material = notValidMat;
-        zones[2].GetComponent<MeshRenderer>().material = notValidMat;
     }
 
     private void OnDestroy()

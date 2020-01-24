@@ -21,14 +21,14 @@ public class Zone : MonoBehaviour
             gameManager.score += Mathf.RoundToInt(50 * gameManager.scoreMultiplier);
             gameManager.scoreMultiplier += 0.2f;
             gameManager.scoreText.text = "Score : " + gameManager.score;
-            gameManager.multiplierText.text = "Multiplier : " + gameManager.multiplierText;
+            gameManager.multiplierText.text = "Multiplier : " + gameManager.scoreMultiplier;
             Destroy(other.gameObject);
         }
         else
         {
             //La note n'est pas validée
             gameManager.scoreMultiplier = 1;
-            gameManager.multiplierText.text = "Multiplier : " + gameManager.multiplierText;
+            gameManager.multiplierText.text = "Multiplier : " + gameManager.scoreMultiplier;
         }
     }
 
